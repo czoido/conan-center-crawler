@@ -29,5 +29,6 @@ jobs:
           conan profile detect
       - name: Run the script
         run: |
+          git clone https://github.com/conan-io/conan-center-index  
           python crawl.py > targets-data.json
           cat targets-data.json
