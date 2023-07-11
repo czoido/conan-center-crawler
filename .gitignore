@@ -1,0 +1,5 @@
+conan-center-index/**
+*.json
+.DS_Store
+.idea
+tmp/**
