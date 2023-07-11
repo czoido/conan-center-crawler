@@ -15,8 +15,12 @@ jobs:
     env:
       CONAN_HOME: /home/conan
     steps:
+
       - name: Check out repository code
-        uses: actions/checkout@v3.5.2
+        uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+        with:
+          path: /home/conan
+
       - name: Configure Conan
         run: |
           pip install conan --upgrade
