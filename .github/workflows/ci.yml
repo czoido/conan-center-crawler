@@ -1,0 +1,29 @@
+on: [push, pull_request, workflow_dispatch]
+
+env:
+  CONAN_HOME: /home/conan
+
+defaults:
+  run:
+    working-directory: /home/conan
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    container:
+      image: conanio/gcc11-ubuntu18.04
+    env:
+      CONAN_HOME: /home/conan
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3.5.2
+      - name: Configure Conan
+        run: |
+          pip install conan --upgrade
+          conan --version
+          pip install -r requirements.txt
+          conan profile detect
+      - name: Run the script
+        run: |
+          python crawl.py > targets-data.json
+          cat targets-data.json
