@@ -8,6 +8,7 @@ import astunparse
 import yaml
 from conan.api.conan_api import ConanAPI
 from conan.api.model import ListPattern
+from conan.cli.printers import print_profiles
 from conans.errors import ConanException
 
 fail = []
@@ -173,7 +174,10 @@ for failed_ref in fail:
         host = conan_api.profiles.get_default_host()
         build = conan_api.profiles.get_default_build()
         profile_build = conan_api.profiles.get_profile(profiles=[build])
-        profile_host = conan_api.profiles.get_profile(profiles=[host])
+        profile_host = conan_api.profiles.get_profile(profiles=[host],
+                                                      conf=['tools.system.package_manager:mode=install',
+                                                            'tools.system.package_manager:sudo=True'])
+        print_profiles(profile_host, profile_build)
         deps_graph = conan_api.graph.load_graph_requires([requires], None,
                                                          profile_host, profile_build, None,
                                                          [remote], None)
