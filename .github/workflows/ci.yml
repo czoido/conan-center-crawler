@@ -30,6 +30,7 @@ jobs:
           cd crawler
           python crawl.py > targets-data.json
           rm -rf ../tmp
+          git fetch origin publish_info
           git checkout publish_info
           ls 
           echo $GITHUB_REPOSITORY
