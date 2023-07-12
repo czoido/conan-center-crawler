@@ -32,8 +32,6 @@ jobs:
           rm -rf tmp
           cd crawler
           ls
-          git config --global user.name ${{ secrets.GH_USER }}
-          git config --global user.email "${{ secrets.GH_MAIL }}"
           git remote -v
           git add targets-data.json
           git commit -m "update targets-data.json"
