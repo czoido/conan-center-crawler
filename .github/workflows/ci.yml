@@ -32,3 +32,10 @@ jobs:
           git clone https://github.com/conan-io/conan-center-index  
           python crawl.py > targets-data.json
           cat targets-data.json
+          rm -rf conan-center-index
+          git config --global user.name ${{ secrets.GH_USER }}
+          git config --global user.email "${{ secrets.GH_MAIL }}"
+          git remote -v
+          git add targets-data.json
+          git commit -m "update targets-data.json"
+          git log
