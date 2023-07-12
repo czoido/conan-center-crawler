@@ -27,11 +27,9 @@ jobs:
       - name: Run the script
         run: |
           git clone https://github.com/conan-io/conan-center-index tmp/conan-center-index
-          python crawler/crawl.py > targets-data.json
-          ls
+          python crawler/crawl.py > crawler/targets-data.json
           rm -rf tmp
           cd crawler
-          ls
           git remote -v
           git add targets-data.json
           git commit -m "update targets-data.json"
