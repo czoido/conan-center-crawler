@@ -165,6 +165,10 @@ for reference in results:
 # now, try to get missing information from fail packages
 # calling the Conan API we do a conan install over the last version
 
+versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in fail])
+
+print(f"We could not get info for some packages. Will try with these versions: {versions_to_try}", file=sys.stderr)
+
 failed_again = []
 for failed_ref in fail:
     try:
