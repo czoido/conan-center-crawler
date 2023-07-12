@@ -4,11 +4,10 @@ import sys
 
 import yaml
 from conan.api.conan_api import ConanAPI
-from conan.api.model import ListPattern
 from conans.errors import ConanException
 
-from conan_helper import get_information_with_conan_install, get_basic_info_with_inspect
-from recipe_parser import get_package_info_from_recipe, get_basic_info_with_parser
+from conan_helper import get_package_info_with_install, get_basic_info_with_inspect
+from recipe_parser import get_package_info_from_recipe, get_basic_info_from_recipe
 
 force_install_packages = ["boost"]
 
@@ -48,7 +47,7 @@ def parse_repo():
                 basic_info = get_basic_info_with_inspect(conan_api, recipe_path)
                 packages_info[recipe_name].update(basic_info)
             except ConanException as exc:
-                basic_info = get_basic_info_with_parser(recipe_name, recipe_content)
+                basic_info = get_basic_info_from_recipe(recipe_name, recipe_content)
                 packages_info[recipe_name].update(basic_info)
 
             try:
@@ -67,30 +66,7 @@ def parse_repo():
 def main():
     failed = parse_repo()
 
-    ref_pattern = ListPattern("*", rrev=None)
-
-    try:
-        list_bundle = conan_api.list.select(ref_pattern, package_query=None, remote=conan_api.remotes.get("conancenter"))
-    except Exception as e:
-        raise e
-    else:
-        results = list_bundle.serialize()
-
-    # first fill versions information in the package_info dict
-    for reference in results:
-        name, version = reference.split("/")
-        if name in packages_info:
-            packages_info[name].setdefault("versions", []).append(version)
-
-    # now, try to get missing information from fail packages
-    # calling the Conan API we do a conan install over the last version
-
-    versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in failed])
-
-    print(f"We could not get info for some packages. Will try installing these versions: {versions_to_try}",
-          file=sys.stderr)
-
-    failed_again = get_information_with_conan_install(conan_api, packages_info, failed)
+    failed_again = get_package_info_with_install(conan_api, packages_info, failed)
 
     json_data = json.dumps({"libraries": packages_info}, indent=4)
 

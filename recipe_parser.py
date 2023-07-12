@@ -24,7 +24,7 @@ def parse_recipe_info(conanfile):
     return desc, lic
 
 
-def get_basic_info_with_parser(recipe_name, recipe_content):
+def get_basic_info_from_recipe(recipe_name, recipe_content):
     basic_info = {}
     description, license = parse_recipe_info(recipe_content)
     if not description:

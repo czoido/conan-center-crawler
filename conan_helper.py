@@ -1,6 +1,7 @@
 import os
 import sys
 
+from conan.api.model import ListPattern
 from conan.cli.printers import print_profiles
 
 
@@ -16,7 +17,31 @@ def get_basic_info_with_inspect(conan_api, recipe_path):
     return info
 
 
-def get_information_with_conan_install(conan_api, packages_info, parser_failed):
+def get_package_info_with_install(conan_api, packages_info, parser_failed):
+
+    ref_pattern = ListPattern("*", rrev=None)
+
+    try:
+        list_bundle = conan_api.list.select(ref_pattern, package_query=None, remote=conan_api.remotes.get("conancenter"))
+    except Exception as e:
+        raise e
+    else:
+        results = list_bundle.serialize()
+
+    # first fill versions information in the package_info dict
+    for reference in results:
+        name, version = reference.split("/")
+        if name in packages_info:
+            packages_info[name].setdefault("versions", []).append(version)
+
+    # now, try to get missing information from fail packages
+    # calling the Conan API we do a conan install over the last version
+
+    versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in failed])
+
+    print(f"We could not get info for some packages. Will try installing these versions: {versions_to_try}",
+          file=sys.stderr)
+
     install_fails = []
     for ref in parser_failed:
         try:
