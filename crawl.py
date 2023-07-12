@@ -169,7 +169,7 @@ for reference in results:
 
 # print(f"We could not get info for some packages. Will try with these versions: {versions_to_try}", file=sys.stderr)
 
-# failed_again = []
+failed_again = []
 # for failed_ref in fail:
 #     try:
 #         print(f"---> try to get cpp_info for: {failed_ref}", file=sys.stderr)
