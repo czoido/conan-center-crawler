@@ -34,10 +34,10 @@ def get_information_with_conan_install(conan_api, packages_info, parser_failed):
             print_profiles(profile_host, profile_build)
             deps_graph = conan_api.graph.load_graph_requires([requires], None,
                                                              profile_host, profile_build, None,
-                                                             [remote], None)
-            conan_api.graph.analyze_binaries(deps_graph, ["missing"], remotes=[remote])
+                                                             [conan_api.remotes.get("conancenter")], None)
+            conan_api.graph.analyze_binaries(deps_graph, ["missing"], remotes=[conan_api.remotes.get("conancenter")])
 
-            conan_api.install.install_binaries(deps_graph=deps_graph, remotes=[remote])
+            conan_api.install.install_binaries(deps_graph=deps_graph, remotes=[conan_api.remotes.get("conancenter")])
 
             conan_api.install.install_consumer(deps_graph=deps_graph,
                                                source_folder=os.path.join(os.getcwd(), "tmp"))

@@ -69,10 +69,8 @@ def main():
 
     ref_pattern = ListPattern("*", rrev=None)
 
-    remote = conan_api.remotes.get("conancenter")
-
     try:
-        list_bundle = conan_api.list.select(ref_pattern, package_query=None, remote=remote)
+        list_bundle = conan_api.list.select(ref_pattern, package_query=None, remote=conan_api.remotes.get("conancenter"))
     except Exception as e:
         raise e
     else:
