@@ -27,12 +27,11 @@ jobs:
       - name: Run the script
         run: |
           git clone https://github.com/conan-io/conan-center-index tmp/conan-center-index
-          python crawler/crawl.py > crawler/targets-data.json
-          rm -rf tmp
           cd crawler
+          python crawl.py > targets-data.json
+          rm -rf ../tmp
           git remote -v
           git config user.name "GitHub Actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add targets-data.json
           git commit -m "update targets-data.json"
-          git push origin main
