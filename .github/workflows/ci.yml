@@ -30,11 +30,11 @@ jobs:
           cd crawler
           python crawl.py > targets-data.json
           rm -rf ../tmp
-          git fetch origin publish_info
-          git checkout publish_info
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config --global user.name "$GITHUB_ACTOR"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git fetch origin publish_info
+          git checkout publish_info
           git add targets-data.json
           git commit -m "update targets-data.json"
           git push origin publish_info
