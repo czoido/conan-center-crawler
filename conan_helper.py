@@ -37,7 +37,7 @@ def get_package_info_with_install(conan_api, packages_info, parser_failed):
     # now, try to get missing information from fail packages
     # calling the Conan API we do a conan install over the last version
 
-    versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in failed])
+    versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in parser_failed])
 
     print(f"We could not get info for some packages. Will try installing these versions: {versions_to_try}",
           file=sys.stderr)
