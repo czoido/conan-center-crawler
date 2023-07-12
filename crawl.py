@@ -165,56 +165,59 @@ for reference in results:
 # now, try to get missing information from fail packages
 # calling the Conan API we do a conan install over the last version
 
-# versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in fail])
+versions_to_try = ", ".join([f"{ref}/{packages_info.get(ref).get('versions')[-1]}" for ref in fail])
 
-# print(f"We could not get info for some packages. Will try with these versions: {versions_to_try}", file=sys.stderr)
+print(f"We could not get info for some packages. Will try installing these versions: {versions_to_try}", file=sys.stderr)
 
 failed_again = []
-# for failed_ref in fail:
-#     try:
-#         print(f"---> try to get cpp_info for: {failed_ref}", file=sys.stderr)
-#         version = packages_info.get(failed_ref).get("versions")[-1]
-#         requires = f"{failed_ref}/{version}"
-#         host = conan_api.profiles.get_default_host()
-#         build = conan_api.profiles.get_default_build()
-#         profile_build = conan_api.profiles.get_profile(profiles=[build])
-#         profile_host = conan_api.profiles.get_profile(profiles=[host],
-#                                                       conf=['tools.system.package_manager:mode=install',
-#                                                             'tools.system.package_manager:sudo=True'])
-#         print_profiles(profile_host, profile_build)
-#         deps_graph = conan_api.graph.load_graph_requires([requires], None,
-#                                                          profile_host, profile_build, None,
-#                                                          [remote], None)
-#         conan_api.graph.analyze_binaries(deps_graph, ["missing"], remotes=[remote])
 
-#         conan_api.install.install_binaries(deps_graph=deps_graph, remotes=[remote])
+for failed_ref in fail:
+    try:
+        print(f"#################################", file=sys.stderr)
+        print(f"Try to get cpp_info for: {failed_ref}", file=sys.stderr)
+        print(f"#################################", file=sys.stderr)
+        version = packages_info.get(failed_ref).get("versions")[-1]
+        requires = f"{failed_ref}/{version}"
+        host = conan_api.profiles.get_default_host()
+        build = conan_api.profiles.get_default_build()
+        profile_build = conan_api.profiles.get_profile(profiles=[build])
+        profile_host = conan_api.profiles.get_profile(profiles=[host],
+                                                      conf=['tools.system.package_manager:mode=install',
+                                                            'tools.system.package_manager:sudo=True'])
+        print_profiles(profile_host, profile_build)
+        deps_graph = conan_api.graph.load_graph_requires([requires], None,
+                                                         profile_host, profile_build, None,
+                                                         [remote], None)
+        conan_api.graph.analyze_binaries(deps_graph, ["missing"], remotes=[remote])
 
-#         conan_api.install.install_consumer(deps_graph=deps_graph,
-#                                            source_folder=os.path.join(os.getcwd(), "tmp"))
+        conan_api.install.install_binaries(deps_graph=deps_graph, remotes=[remote])
 
-#         nodes = deps_graph.serialize()["nodes"]
+        conan_api.install.install_consumer(deps_graph=deps_graph,
+                                           source_folder=os.path.join(os.getcwd(), "tmp"))
 
-#         properties_info = {}
+        nodes = deps_graph.serialize()["nodes"]
 
-#         for id, node_info in nodes.items():
-#             if requires in node_info.get("ref"):
-#                 cpp_info = node_info.get("cpp_info")
-#                 for component_name, component_info in cpp_info.items():
-#                     properties = component_info.get("properties")
-#                     if properties:
-#                         if component_name == "root":
-#                             properties_info.update(properties)
-#                         elif not component_name.startswith("_"):
-#                             if not properties_info.get("components"):
-#                                 properties_info["components"] = {}
-#                             properties_info["components"][component_name] = properties
-#                 break
+        properties_info = {}
 
-#         if properties_info:
-#             packages_info[failed_ref].update(properties_info)
+        for id, node_info in nodes.items():
+            if requires in node_info.get("ref"):
+                cpp_info = node_info.get("cpp_info")
+                for component_name, component_info in cpp_info.items():
+                    properties = component_info.get("properties")
+                    if properties:
+                        if component_name == "root":
+                            properties_info.update(properties)
+                        elif not component_name.startswith("_"):
+                            if not properties_info.get("components"):
+                                properties_info["components"] = {}
+                            properties_info["components"][component_name] = properties
+                break
 
-#     except Exception as e:
-#         failed_again.append(failed_ref)
+        if properties_info:
+            packages_info[failed_ref].update(properties_info)
+
+    except Exception as e:
+        failed_again.append(failed_ref)
 
 json_data = json.dumps({"libraries": packages_info}, indent=4)
 
