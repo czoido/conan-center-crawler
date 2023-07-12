@@ -66,7 +66,7 @@ def parse_repo():
 def main():
     failed = parse_repo()
 
-    failed_again = get_package_info_with_install(conan_api, packages_info, failed)
+    failed_again = []#get_package_info_with_install(conan_api, packages_info, failed)
 
     json_data = json.dumps({"libraries": packages_info}, indent=4)
 

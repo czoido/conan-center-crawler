@@ -30,8 +30,7 @@ jobs:
           cd crawler
           python crawl.py > targets-data.json
           rm -rf ../tmp
-          git remote -v
-          git config user.name "GitHub Actions"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add targets-data.json
-          git commit -m "update targets-data.json"
+          git checkout publish_info
+          ls 
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_ACTOR
