@@ -28,13 +28,14 @@ jobs:
         run: |
           git clone https://github.com/conan-io/conan-center-index tmp/conan-center-index
           cd crawler
-          python crawl.py > targets-data.json
-          rm -rf ../tmp
+          python crawl.py > ../tmp/targets-data.json
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config --local user.name "$GITHUB_ACTOR"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
           git fetch origin publish_info
           git checkout publish_info
+          mv ../tmp/targets-data.json .
+          rm -rf ../tmp
           git add targets-data.json
           git commit -m "update targets-data.json"
           git push origin publish_info
