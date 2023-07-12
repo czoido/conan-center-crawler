@@ -92,7 +92,7 @@ def main():
     print(f"We could not get info for some packages. Will try installing these versions: {versions_to_try}",
           file=sys.stderr)
 
-    failed_again = failed#get_information_with_conan_install(conan_api, packages_info, failed)
+    failed_again = get_information_with_conan_install(conan_api, packages_info, failed)
 
     json_data = json.dumps({"libraries": packages_info}, indent=4)
 

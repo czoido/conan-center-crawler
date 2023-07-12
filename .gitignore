@@ -2,3 +2,4 @@ conan-center-index/**
 .DS_Store
 .idea
 tmp/**
+**.pyc
