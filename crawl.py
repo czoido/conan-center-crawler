@@ -86,7 +86,7 @@ def get_methods_from_conanfile_derived_class(conanfile):
     return info
 
 
-root_dir = 'conan-center-index/recipes'
+root_dir = 'tmp/conan-center-index/recipes'
 
 packages_info = {}
 #

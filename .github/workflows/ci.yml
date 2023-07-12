@@ -1,8 +1,5 @@
 on: [push, pull_request, workflow_dispatch]
 
-env:
-  CONAN_HOME: /home/conan
-
 defaults:
   run:
     working-directory: /home/conan
@@ -13,7 +10,7 @@ jobs:
     container:
       image: conanio/gcc11-ubuntu18.04
     env:
-      CONAN_HOME: /home/conan
+      CONAN_HOME: /home/conan/tmp
     steps:
 
       - name: Check out repository code
@@ -29,10 +26,10 @@ jobs:
           conan profile detect
       - name: Run the script
         run: |
-          git clone https://github.com/conan-io/conan-center-index  
+          git clone https://github.com/conan-io/conan-center-index tmp/conan-center-index
           python crawl.py > targets-data.json
           ls
-          rm -rf conan-center-index
+          rm -rf tmp
           git config --global user.name ${{ secrets.GH_USER }}
           git config --global user.email "${{ secrets.GH_MAIL }}"
           git remote -v
