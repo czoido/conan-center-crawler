@@ -14,7 +14,7 @@ jobs:
     steps:
 
       - name: Check out repository code
-        uses: rodrigorodriguescosta/checkout@1d64c0a4a695ff5edb95596c11b430050668c83f  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
+        uses: actions/checkout@v3  # FIXME: Not using actions/checkout just because of 'https://github.com/actions/checkout/pull/388'
         with:
           path: /home/conan/crawler
 
@@ -31,6 +31,8 @@ jobs:
           rm -rf tmp
           cd crawler
           git remote -v
+          git config user.name "GitHub Actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add targets-data.json
           git commit -m "update targets-data.json"
           git log
