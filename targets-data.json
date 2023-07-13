@@ -9050,7 +9050,7 @@
             "cmake_module_target_name": "Yder::Yder-static",
             "pkg_config_name": "libyder",
             "cmake_build_modules": [
-                "/home/conan/tmp/p/b/yder835a5f3bf9c51/p/lib/cmake/conan-official-yder-variables.cmake"
+                "/home/conan/tmp/p/b/ydercdcc6a65e8691/p/lib/cmake/conan-official-yder-variables.cmake"
             ]
         },
         "charls": {
@@ -9936,7 +9936,7 @@
                 "0.4.0",
                 "0.3.7"
             ],
-            "description": "Experimental range library for C++11/14/17",
+            "description": "Range library for C++14/17/20, basis for C++20's std::ranges",
             "license": [
                 "BSL-1.0"
             ],
@@ -20503,7 +20503,7 @@
             "cmake_target_name": "Ulfius::Ulfius-static",
             "pkg_config_name": "libulfius",
             "cmake_build_modules": [
-                "/home/conan/tmp/p/b/ulfiu0b62da81a0b06/p/lib/cmake/conan-official-ulfius-variables.cmake"
+                "/home/conan/tmp/p/b/ulfiu8df3ca83ada5f/p/lib/cmake/conan-official-ulfius-variables.cmake"
             ]
         },
         "libucl": {
