@@ -24,8 +24,12 @@ def parse_recipe_info(conanfile):
     return desc, lic
 
 
-def get_basic_info_from_recipe(recipe_name, recipe_content):
+def get_basic_info_from_recipe(recipe_name, recipe_path):
     basic_info = {}
+
+    with open(recipe_path, 'r') as f:
+        recipe_content = f.read()
+
     description, license = parse_recipe_info(recipe_content)
     if not description:
         raise Exception(f"could not get basic information for: {recipe_name}")
@@ -36,8 +40,12 @@ def get_basic_info_from_recipe(recipe_name, recipe_content):
     return basic_info
 
 
-def get_package_info_from_recipe(conanfile):
-    root = ast.parse(conanfile)
+def get_package_info_from_recipe(recipe_path):
+
+    with open(recipe_path, 'r') as f:
+        recipe_content = f.read()
+
+    root = ast.parse(recipe_content)
 
     package_info = {}
 
